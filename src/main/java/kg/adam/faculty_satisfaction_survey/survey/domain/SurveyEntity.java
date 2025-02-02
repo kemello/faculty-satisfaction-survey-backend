@@ -1,6 +1,7 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
+import kg.adam.faculty_satisfaction_survey.response.ResponseEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "survey")
-class Survey {
+public class SurveyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "survey_id_gen")
     @SequenceGenerator(name = "survey_id_gen", sequenceName = "survey_id_seq", allocationSize = 1)
@@ -29,10 +30,10 @@ class Survey {
             joinColumns = @JoinColumn(name = "survey_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
-    private Set<Question> questions = new HashSet<>();
+    private Set<QuestionEntity> questions = new HashSet<>();
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Response> responses = new HashSet<>();
+    private Set<ResponseEntity> responses = new HashSet<>();
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -104,19 +105,19 @@ class Survey {
         this.updatedAt = updatedAt;
     }
 
-    public Set<Question> getQuestions() {
+    public Set<QuestionEntity> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Set<Question> questions) {
+    public void setQuestions(Set<QuestionEntity> questions) {
         this.questions = questions;
     }
 
-    public Set<Response> getResponses() {
+    public Set<ResponseEntity> getResponses() {
         return responses;
     }
 
-    public void setResponses(Set<Response> responses) {
+    public void setResponses(Set<ResponseEntity> responses) {
         this.responses = responses;
 
 

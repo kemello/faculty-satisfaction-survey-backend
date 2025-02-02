@@ -1,6 +1,7 @@
-package kg.adam.faculty_satisfaction_survey.course.domain;
+package kg.adam.faculty_satisfaction_survey.academic.domain;
 
 import jakarta.persistence.*;
+import kg.adam.faculty_satisfaction_survey.student.domain.StudentEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "course")
-class Course {
+public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_gen")
     @SequenceGenerator(name = "course_id_gen", sequenceName = "course_id_seq", allocationSize = 1)
@@ -24,7 +25,7 @@ class Course {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "professor_id", nullable = false)
-    private Professor professor;
+    private ProfessorEntity professor;
 
     @ManyToMany
     @JoinTable(
@@ -32,7 +33,7 @@ class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private Set<Student> students = new HashSet<>();
+    private Set<StudentEntity> students = new HashSet<>();
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -56,11 +57,11 @@ class Course {
         this.name = name;
     }
 
-    public Professor getProfessor() {
+    public ProfessorEntity getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Professor professor) {
+    public void setProfessor(ProfessorEntity professor) {
         this.professor = professor;
     }
 
@@ -72,11 +73,11 @@ class Course {
         this.createdAt = createdAt;
     }
 
-    public Set<Student> getStudents() {
+    public Set<StudentEntity> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(Set<StudentEntity> students) {
         this.students = students;
     }
 

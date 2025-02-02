@@ -1,4 +1,4 @@
-package kg.adam.faculty_satisfaction_survey.survey.domain;
+package kg.adam.faculty_satisfaction_survey.response;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

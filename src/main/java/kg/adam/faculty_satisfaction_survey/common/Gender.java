@@ -1,4 +1,4 @@
-  package kg.adam.faculty_satisfaction_survey.course.domain.model;
+  package kg.adam.faculty_satisfaction_survey.common;
 
   /**
    * Enum representing gender options for a student.

@@ -1,4 +1,4 @@
-package kg.adam.faculty_satisfaction_survey.course.domain;
+package kg.adam.faculty_satisfaction_survey.academic.domain;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "professor")
-class Professor {
+class ProfessorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "professor_id_gen")
     @SequenceGenerator(name = "professor_id_gen", sequenceName = "professor_id_seq", allocationSize = 1)
@@ -26,7 +26,7 @@ class Professor {
     private String avatarUrl;
 
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
-    private Set<Course> courses = new HashSet<>();
+    private Set<CourseEntity> courses = new HashSet<>();
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -84,11 +84,11 @@ class Professor {
         this.updatedAt = updatedAt;
     }
 
-    public Set<Course> getCourses() {
+    public Set<CourseEntity> getCourses() {
         return courses;
     }
 
-    public void setCourses(Set<Course> courses) {
+    public void setCourses(Set<CourseEntity> courses) {
         this.courses = courses;
     }
 

@@ -1,14 +1,14 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.QuestionType;
+import kg.adam.faculty_satisfaction_survey.common.QuestionType;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "survey_question")
-class Question {
+public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "survey_question_id_gen")
     @SequenceGenerator(name = "survey_question_id_gen", sequenceName = "question_id_seq", allocationSize = 1)

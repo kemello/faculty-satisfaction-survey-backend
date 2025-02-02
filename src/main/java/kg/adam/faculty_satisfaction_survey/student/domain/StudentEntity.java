@@ -1,10 +1,11 @@
-package kg.adam.faculty_satisfaction_survey.course.domain;
+package kg.adam.faculty_satisfaction_survey.student.domain;
 
 import jakarta.persistence.*;
-import kg.adam.faculty_satisfaction_survey.course.domain.model.AcademicYear;
-import kg.adam.faculty_satisfaction_survey.course.domain.model.Faculty;
-import kg.adam.faculty_satisfaction_survey.course.domain.model.Gender;
-import kg.adam.faculty_satisfaction_survey.course.domain.model.StudyMode;
+import kg.adam.faculty_satisfaction_survey.academic.domain.CourseEntity;
+import kg.adam.faculty_satisfaction_survey.common.AcademicYear;
+import kg.adam.faculty_satisfaction_survey.common.Faculty;
+import kg.adam.faculty_satisfaction_survey.common.Gender;
+import kg.adam.faculty_satisfaction_survey.common.StudyMode;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
-class Student {
+public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_gen")
     @SequenceGenerator(name = "student_id_gen", sequenceName = "student_id_seq", allocationSize = 1)
@@ -45,7 +46,7 @@ class Student {
     private Gender gender;
 
     @ManyToMany(mappedBy = "students")
-    private Set<Course> courses = new HashSet<>();
+    private Set<CourseEntity> courses = new HashSet<>();
 
     public AcademicYear getAcademicYear() {
         return academicYear;
@@ -55,11 +56,11 @@ class Student {
         this.academicYear = academicYear;
     }
 
-    public Set<Course> getCourses() {
+    public Set<CourseEntity> getCourses() {
         return courses;
     }
 
-    public void setCourses(Set<Course> courses) {
+    public void setCourses(Set<CourseEntity> courses) {
         this.courses = courses;
     }
 

@@ -1,7 +1,9 @@
-package kg.adam.faculty_satisfaction_survey.survey.domain;
+package kg.adam.faculty_satisfaction_survey.response;
 
 import jakarta.persistence.*;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.QuestionType;
+import kg.adam.faculty_satisfaction_survey.survey.domain.QuestionEntity;
+import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyEntity;
+import kg.adam.faculty_satisfaction_survey.common.QuestionType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,7 +12,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "survey_response")
-class Response {
+public class ResponseEntity {
     @EmbeddedId
     private ResponseId id;
 
@@ -19,13 +21,13 @@ class Response {
     cascade = {CascadeType.ALL})
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "survey_id", nullable = false)
-    private Survey survey;
+    private SurveyEntity survey;
 
     @MapsId("questionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    private QuestionEntity question;
 
     @Column(name = "response", nullable = false, length = Integer.MAX_VALUE)
     private String response;
@@ -48,19 +50,19 @@ class Response {
         this.id = id;
     }
 
-    public Survey getSurvey() {
+    public SurveyEntity getSurvey() {
         return survey;
     }
 
-    public void setSurvey(Survey survey) {
+    public void setSurvey(SurveyEntity survey) {
         this.survey = survey;
     }
 
-    public Question getQuestion() {
+    public QuestionEntity getQuestion() {
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionEntity question) {
         this.question = question;
     }
 
