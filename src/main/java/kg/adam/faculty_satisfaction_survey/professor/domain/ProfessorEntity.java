@@ -1,34 +1,29 @@
-package kg.adam.faculty_satisfaction_survey.survey.domain;
+package kg.adam.faculty_satisfaction_survey.professor.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "survey")
-class SurveyEntity extends BaseEntity<Long> {
+@Table(name = "professor")
+class ProfessorEntity extends BaseEntity<Long> {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "description", length = Integer.MAX_VALUE)
-    private String description;
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseEntity> courses = new HashSet<>();
 
     @Column(name = "created_at")
     @CreatedDate
@@ -38,15 +33,14 @@ class SurveyEntity extends BaseEntity<Long> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public SurveyEntity(Long id) {
+    public ProfessorEntity(Long id) {
         this.id = id;
     }
 
-    protected SurveyEntity() {
+    protected ProfessorEntity() {
     }
 
-
-    // getters and setters
+    //getters and setters
 
     public Long getId() {
         return id;
@@ -64,28 +58,20 @@ class SurveyEntity extends BaseEntity<Long> {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public Set<CourseEntity> getCourses() {
+        return courses;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setCourses(Set<CourseEntity> courses) {
+        this.courses = courses;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -103,5 +89,4 @@ class SurveyEntity extends BaseEntity<Long> {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

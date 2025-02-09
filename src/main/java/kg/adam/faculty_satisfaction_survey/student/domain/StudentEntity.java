@@ -1,23 +1,22 @@
 package kg.adam.faculty_satisfaction_survey.student.domain;
 
 import jakarta.persistence.*;
-import kg.adam.faculty_satisfaction_survey.academic.domain.CourseEntity;
-import kg.adam.faculty_satisfaction_survey.common.AcademicYear;
-import kg.adam.faculty_satisfaction_survey.common.Faculty;
-import kg.adam.faculty_satisfaction_survey.common.Gender;
-import kg.adam.faculty_satisfaction_survey.common.StudyMode;
-import org.hibernate.annotations.ColumnDefault;
+import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
+import kg.adam.faculty_satisfaction_survey.common.enums.AcademicYear;
+import kg.adam.faculty_satisfaction_survey.common.enums.Faculty;
+import kg.adam.faculty_satisfaction_survey.common.enums.Gender;
+import kg.adam.faculty_satisfaction_survey.common.enums.StudyMode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "student")
-public class StudentEntity {
+class StudentEntity extends BaseEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_gen")
-    @SequenceGenerator(name = "student_id_gen", sequenceName = "student_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -29,14 +28,6 @@ public class StudentEntity {
     @Column(name = "faculty", columnDefinition = "faculty_enum not null", nullable = false)
     private Faculty faculty;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "mode_of_study", columnDefinition = "study_mode_enum not null")
     private StudyMode modeOfStudy;
@@ -45,8 +36,30 @@ public class StudentEntity {
     @Column(name = "gender", columnDefinition = "gender_enum not null")
     private Gender gender;
 
-    @ManyToMany(mappedBy = "students")
-    private Set<CourseEntity> courses = new HashSet<>();
+    @Column(updatable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id")
+    )
+    private Set<StudentCourseEnrollment> enrollments = new HashSet<>();
+
+    public StudentEntity(Long id) {
+        this.id = id;
+    }
+
+    protected StudentEntity() {
+    }
+
+    //getters and setters
+
 
     public AcademicYear getAcademicYear() {
         return academicYear;
@@ -56,20 +69,20 @@ public class StudentEntity {
         this.academicYear = academicYear;
     }
 
-    public Set<CourseEntity> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<CourseEntity> courses) {
-        this.courses = courses;
-    }
-
-    public Instant getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<StudentCourseEnrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<StudentCourseEnrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
     public Faculty getFaculty() {
@@ -104,13 +117,11 @@ public class StudentEntity {
         this.modeOfStudy = modeOfStudy;
     }
 
-    public Instant getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
 }

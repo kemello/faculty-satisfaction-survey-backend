@@ -1,17 +1,17 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
-import kg.adam.faculty_satisfaction_survey.common.QuestionType;
+import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
+import kg.adam.faculty_satisfaction_survey.common.enums.QuestionType;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "survey_question")
-public class QuestionEntity {
+class QuestionEntity extends BaseEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "survey_question_id_gen")
-    @SequenceGenerator(name = "survey_question_id_gen", sequenceName = "question_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -25,9 +25,9 @@ public class QuestionEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type",
@@ -35,6 +35,14 @@ public class QuestionEntity {
             nullable = false)
     private QuestionType questionType;
 
+    public QuestionEntity(Long id) {
+        this.id = id;
+    }
+
+    public QuestionEntity() {
+    }
+
+    // getters and setters
     public Long getId() {
         return id;
     }
@@ -67,11 +75,11 @@ public class QuestionEntity {
         this.isActive = isActive;
     }
 
-    public Instant getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

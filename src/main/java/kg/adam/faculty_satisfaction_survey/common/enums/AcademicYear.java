@@ -1,4 +1,4 @@
-package kg.adam.faculty_satisfaction_survey.common;
+package kg.adam.faculty_satisfaction_survey.common.enums;
 
 /**
  * Enum representing academic year options for a student.
@@ -20,12 +20,4 @@ public enum AcademicYear {
         return dbValue;
     }
 
-    public static AcademicYear fromDbValue(String value) {
-        for (AcademicYear year : values()) {
-            if (year.dbValue.equals(value)) {
-                return year;
-            }
-        }
-        throw new IllegalArgumentException("Unknown database value: " + value);
-    }
 }

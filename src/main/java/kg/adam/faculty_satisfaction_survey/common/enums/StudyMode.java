@@ -1,4 +1,4 @@
-  package kg.adam.faculty_satisfaction_survey.common;
+  package kg.adam.faculty_satisfaction_survey.common.enums;
 
   /**
    * Enum representing modes of study for a student.
