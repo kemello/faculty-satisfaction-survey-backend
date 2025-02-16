@@ -1,10 +1,12 @@
+create sequence course_id_seq start with 1 increment by 50;
+
 -- Table: course
 create table course
 (
-    id           bigint not null,
+    id           bigint       not null default nextval('course_id_seq'),
     name         varchar(255) not null unique,
-    professor_id bigint not null,
-    created_at   timestamp not null,
+    professor_id bigint       not null,
+    created_at   timestamp    not null,
     primary key (id),
     foreign key (professor_id) references professor (id) on delete cascade
 );
@@ -12,19 +14,19 @@ create table course
 -- Consolidated course relationships
 create table course_assignment
 (
-    course_id     bigint       not null,
-    faculty       faculty_enum not null,
-    academic_year academic_year_enum not null,
-    mode_of_study study_mode_enum not null,
-    primary key (course_id, faculty, academic_year, mode_of_study),
+    course_id     bigint not null,
+    faculty       text   not null,
+    academic_year text   not null,
+    study_mode    text   not null,
+    primary key (course_id, faculty, academic_year, study_mode),
     foreign key (course_id) references course (id) on delete cascade
 );
 
 -- Student-course enrollment table
 create table student_course
 (
-    student_id bigint not null,
-    course_id  bigint not null,
+    student_id  bigint    not null,
+    course_id   bigint    not null,
     enrolled_at timestamp not null,
     primary key (student_id, course_id),
     foreign key (student_id) references student (id) on delete cascade,
