@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "course")
 class CourseEntity extends BaseEntity<Long> {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_id_seq")
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -30,11 +30,12 @@ class CourseEntity extends BaseEntity<Long> {
     private Set<CourseAssignment> assignments = new HashSet<>();
 
     @Column(name = "created_at", updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public CourseEntity(Long id) {
-        this.id = id;
+    CourseEntity(String name, ProfessorEntity professor, Set<CourseAssignment> assignments) {
+        this.name = name;
+        this.professor = professor;
+        this.assignments = assignments;
     }
 
     protected CourseEntity() {}

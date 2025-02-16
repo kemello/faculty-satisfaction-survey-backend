@@ -13,7 +13,7 @@ import java.util.Set;
 @Table(name = "professor")
 class ProfessorEntity extends BaseEntity<Long> {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "professor_id_seq")
     private Long id;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -25,9 +25,9 @@ class ProfessorEntity extends BaseEntity<Long> {
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CourseEntity> courses = new HashSet<>();
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
     @LastModifiedDate
@@ -40,8 +40,19 @@ class ProfessorEntity extends BaseEntity<Long> {
     protected ProfessorEntity() {
     }
 
-    //getters and setters
 
+    // Aggregate behaviour
+    void addCourse(CourseEntity course) {
+        course.setProfessor(this);
+        this.courses.add(course);
+    }
+
+    void removeCourse(CourseEntity course) {
+        courses.remove(course);
+    }
+
+
+    //getters and setters
     public Long getId() {
         return id;
     }
