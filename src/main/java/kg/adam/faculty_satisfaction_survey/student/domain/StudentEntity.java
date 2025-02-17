@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "student")
 class StudentEntity extends BaseEntity<Long> {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -37,12 +37,7 @@ class StudentEntity extends BaseEntity<Long> {
     private Gender gender;
 
     @Column(updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ElementCollection
     @CollectionTable(
@@ -51,8 +46,11 @@ class StudentEntity extends BaseEntity<Long> {
     )
     private Set<StudentCourseEnrollment> enrollments = new HashSet<>();
 
-    public StudentEntity(Long id) {
-        this.id = id;
+        public StudentEntity(AcademicYear academicYear, Faculty faculty, StudyMode modeOfStudy, Gender gender) {
+        this.academicYear = academicYear;
+        this.faculty = faculty;
+        this.modeOfStudy = modeOfStudy;
+        this.gender = gender;
     }
 
     protected StudentEntity() {
@@ -117,11 +115,4 @@ class StudentEntity extends BaseEntity<Long> {
         this.modeOfStudy = modeOfStudy;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

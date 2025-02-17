@@ -5,6 +5,7 @@ import kg.adam.faculty_satisfaction_survey.professor.domain.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfessorService {
@@ -54,4 +55,16 @@ public class ProfessorService {
         ProfessorEntity professor = repository.findById(professorId).orElseThrow();
         return CourseMapper.toDataList(professor.getCourses());
     }
+
+    public Set<ProfessorData> getProfessorsByAssignment(CourseAssignmentData data) {
+        return repository.findAll().stream()
+                .filter(p -> p.getCourses().stream()
+                        .anyMatch(c -> c.getAssignments().stream()
+                                .anyMatch(a -> a.getFaculty().equals(data.faculty()) &&
+                                        a.getAcademicYear().equals(data.academicYear()) &&
+                                        a.getStudyMode().equals(data.studyMode()))))
+                .map(ProfessorMapper::toData)
+                .collect(Collectors.toSet());
+    }
+
 }

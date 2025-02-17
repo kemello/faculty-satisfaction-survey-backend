@@ -16,22 +16,29 @@ class ProfessorController {
     }
 
     @PostMapping
-    public ProfessorData createProfessor(@RequestBody CreateProfessorRequest  professor)
+    ProfessorData createProfessor(@RequestBody CreateProfessorRequest  professor)
     {
         return service.createProfessor(professor);
     }
 
     //add course
     @PostMapping("/assign-to-course")
-    public AddCourseResponse addCourse(@RequestBody AddCourseRequest request)
+    AddCourseResponse addCourse(@RequestBody AddCourseRequest request)
     {
         return service.addCourse(request);
     }
 
     //get courses
     @GetMapping("/{professorId}/courses")
-    public Set<CourseData> getProfessorCourses(@PathVariable Long professorId)
+    Set<CourseData> getProfessorCoursesById(@PathVariable Long professorId)
     {
         return service.getProfessorCourses(professorId);
+    }
+
+    //get professors based on student info
+    @GetMapping("/by-assignments")
+    Set<ProfessorData> getProfessorsByAssignment(@RequestBody CourseAssignmentData data)
+    {
+        return service.getProfessorsByAssignment(data);
     }
 }
