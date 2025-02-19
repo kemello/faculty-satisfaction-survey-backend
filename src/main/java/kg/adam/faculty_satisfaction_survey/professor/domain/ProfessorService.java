@@ -56,6 +56,7 @@ public class ProfessorService {
         return CourseMapper.toDataList(professor.getCourses());
     }
 
+    @Transactional
     public Set<ProfessorData> getProfessorsByAssignment(CourseAssignmentData data) {
         return repository.findAll().stream()
                 .filter(p -> p.getCourses().stream()

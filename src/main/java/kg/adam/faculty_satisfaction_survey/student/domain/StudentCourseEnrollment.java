@@ -15,4 +15,17 @@ class StudentCourseEnrollment {
     @Column(name = "enrolled_at", updatable  = false)
     private LocalDateTime enrolledAt;
 
+    StudentCourseEnrollment(Long courseId)
+    {
+        this.courseId = courseId;
+        this.enrolledAt = LocalDateTime.now();
+    }
+
+    protected StudentCourseEnrollment() {}
+
+    public Long getCourseId()
+    {
+        return courseId;
+    }
+
 }

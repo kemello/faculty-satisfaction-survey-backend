@@ -56,6 +56,16 @@ class StudentEntity extends BaseEntity<Long> {
     protected StudentEntity() {
     }
 
+    //aggregate behavior
+    public void enrollInCourse(Long courseId) {
+        enrollments.add(new StudentCourseEnrollment(courseId));
+    }
+
+    public void unenrollFromCourse(Long courseId) {
+        enrollments.removeIf(enrollment -> enrollment.getCourseId().equals(courseId));
+    }
+
+
     //getters and setters
 
 
