@@ -11,7 +11,6 @@ create table student
     academic_year  text not null,
     mode_of_study  text not null,                          -- Enum for study mode
     created_at     timestamp not null,
-    updated_at     timestamp not null,
     primary key (id)
 );
 
