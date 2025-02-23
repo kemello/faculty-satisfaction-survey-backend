@@ -58,12 +58,15 @@ public class ProfessorService {
 
     @Transactional
     public Set<ProfessorData> getProfessorsByAssignment(CourseAssignmentData data) {
-        return repository.findAll().stream()
-                .filter(p -> p.getCourses().stream()
-                        .anyMatch(c -> c.getAssignments().stream()
-                                .anyMatch(a -> a.getFaculty().equals(data.faculty()) &&
-                                        a.getAcademicYear().equals(data.academicYear()) &&
-                                        a.getStudyMode().equals(data.studyMode()))))
+//        return repository.findAll().stream()
+//                .filter(p -> p.getCourses().stream()
+//                        .anyMatch(c -> c.getAssignments().stream()
+//                                .anyMatch(a -> a.getFaculty().equals(data.faculty()) &&
+//                                        a.getAcademicYear().equals(data.academicYear()) &&
+//                                        a.getStudyMode().equals(data.studyMode()))))
+//                .map(ProfessorMapper::toData)
+//                .collect(Collectors.toSet());
+        return repository.findAllByFaculty(data.faculty().name()).stream()
                 .map(ProfessorMapper::toData)
                 .collect(Collectors.toSet());
     }

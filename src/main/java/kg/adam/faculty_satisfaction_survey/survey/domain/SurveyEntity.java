@@ -1,15 +1,15 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "survey")
@@ -37,6 +37,10 @@ class SurveyEntity extends BaseEntity<Long> {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @ElementCollection
+    @CollectionTable(name = "survey_question_assignment", joinColumns = @JoinColumn(name = "survey_id"))
+    private List<SurveyQuestionAssignment> questions = new ArrayList<>();
 
     public SurveyEntity(Long id) {
         this.id = id;
