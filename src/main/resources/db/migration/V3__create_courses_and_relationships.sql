@@ -4,7 +4,7 @@ create sequence course_id_seq start with 1 increment by 50;
 create table course
 (
     id           bigint       not null default nextval('course_id_seq'),
-    name         varchar(255) not null unique,
+    name         varchar(255) not null,
     professor_id bigint       not null,
     created_at   timestamp    not null,
     primary key (id),
