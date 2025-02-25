@@ -20,23 +20,14 @@ create table survey
 create table survey_question
 (
     id           bigint not null default nextval('question_id_seq'),
+    survey_id    bigint not null,
     text         varchar(255) not null,
     question_type text not null,                      -- Enum for question type
-    metadata     text,
-    is_active    boolean not null default true,
+    question_category text not null,
+    question_order integer not null,
     created_at   timestamp not null,
-    primary key (id)
-);
-
--- Table: survey_question_assignment
-create table survey_question_assignment
-(
-    survey_id    bigint not null,
-    question_id  bigint not null,
-    order_number integer not null,
-    primary key (survey_id, question_id),
-    foreign key (survey_id) references survey (id) on delete cascade,
-    foreign key (question_id) references survey_question (id) on delete cascade
+    primary key (id),
+    foreign key (survey_id) references survey (id) on delete cascade  -- ADD FOREIGN KEY
 );
 
 

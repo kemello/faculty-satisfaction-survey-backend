@@ -2,8 +2,11 @@ package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
+import kg.adam.faculty_satisfaction_survey.common.enums.QuestionCategory;
 import kg.adam.faculty_satisfaction_survey.common.enums.QuestionType;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -12,67 +15,51 @@ import java.time.LocalDateTime;
 @Table(name = "survey_question")
 class QuestionEntity extends BaseEntity<Long> {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_id_seq")
     private Long id;
 
     @Column(name = "text", nullable = false)
     private String text;
-
-    @Column(name = "metadata", length = Integer.MAX_VALUE)
-    private String metadata;
-
-    @ColumnDefault("true")
-    @Column(name = "is_active")
-    private Boolean isActive;
 
     @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "question_type",
-            columnDefinition = "question_type_enum not null",
-            nullable = false)
     private QuestionType questionType;
 
-    public QuestionEntity(Long id) {
-        this.id = id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "question_category", nullable = false)
+    private QuestionCategory category;
+
+    @Column(name = "question_order", nullable = false)
+    private Integer order;
+
+    @ManyToOne
+    @JoinColumn(name = "survey_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private SurveyEntity survey;
+
+    public QuestionEntity(String text, QuestionType questionType, QuestionCategory category, SurveyEntity survey) {
+        this.text = text;
+        this.questionType = questionType;
+        this.category = category;
+        this.survey = survey;
     }
 
-    public QuestionEntity() {
+    protected QuestionEntity() {
     }
+
 
     // getters and setters
-    public Long getId() {
-        return id;
+
+
+    public QuestionCategory getCategory() {
+        return category;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setCategory(QuestionCategory category) {
+        this.category = category;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -83,6 +70,22 @@ class QuestionEntity extends BaseEntity<Long> {
         this.createdAt = createdAt;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public QuestionType getQuestionType() {
         return questionType;
     }
@@ -91,11 +94,19 @@ class QuestionEntity extends BaseEntity<Long> {
         this.questionType = questionType;
     }
 
-    public Boolean getActive() {
-        return isActive;
+    public SurveyEntity getSurvey() {
+        return survey;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setSurvey(SurveyEntity survey) {
+        this.survey = survey;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

@@ -9,13 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "survey")
 class SurveyEntity extends BaseEntity<Long> {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "survey_id_seq")
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -23,6 +22,9 @@ class SurveyEntity extends BaseEntity<Long> {
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuestionEntity> questions;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -38,19 +40,50 @@ class SurveyEntity extends BaseEntity<Long> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @ElementCollection
-    @CollectionTable(name = "survey_question_assignment", joinColumns = @JoinColumn(name = "survey_id"))
-    private List<SurveyQuestionAssignment> questions = new ArrayList<>();
 
-    public SurveyEntity(Long id) {
-        this.id = id;
+    public SurveyEntity(String name, String description, LocalDate endDate, LocalDate startDate) {
+        this.name = name;
+        this.description = description;
+        this.endDate = endDate;
+        this.startDate = startDate;
     }
 
     protected SurveyEntity() {
     }
 
+    //aggregate behavior
+    public void addQuestion(QuestionEntity question) {
+        question.setSurvey(this);
+        questions.add(question);
+    }
+
 
     // getters and setters
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     public Long getId() {
         return id;
@@ -68,12 +101,12 @@ class SurveyEntity extends BaseEntity<Long> {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public List<QuestionEntity> getQuestions() {
+        return questions;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setQuestions(List<QuestionEntity> questions) {
+        this.questions = questions;
     }
 
     public LocalDate getStartDate() {
@@ -84,22 +117,6 @@ class SurveyEntity extends BaseEntity<Long> {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -107,5 +124,4 @@ class SurveyEntity extends BaseEntity<Long> {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }
