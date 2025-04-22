@@ -1,5 +1,8 @@
 package kg.adam.faculty_satisfaction_survey.professor.web;
 
+import kg.adam.faculty_satisfaction_survey.common.enums.AcademicYear;
+import kg.adam.faculty_satisfaction_survey.common.enums.Faculty;
+import kg.adam.faculty_satisfaction_survey.common.enums.StudyMode;
 import kg.adam.faculty_satisfaction_survey.professor.domain.ProfessorService;
 import kg.adam.faculty_satisfaction_survey.professor.domain.model.*;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +40,12 @@ class ProfessorController {
 
     //get professors based on student info
     @GetMapping("/by-assignments")
-    Set<ProfessorData> getProfessorsByAssignment(@RequestBody CourseAssignmentData data)
-    {
+    Set<ProfessorData> getProfessorsByAssignment(
+            @RequestParam Faculty faculty,
+            @RequestParam AcademicYear academicYear,
+            @RequestParam StudyMode studyMode
+    ) {
+        CourseAssignmentData data = new CourseAssignmentData(faculty, academicYear, studyMode);
         return service.getProfessorsByAssignment(data);
     }
 }
