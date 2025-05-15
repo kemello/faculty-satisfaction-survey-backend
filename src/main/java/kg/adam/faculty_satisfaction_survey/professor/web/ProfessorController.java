@@ -46,6 +46,9 @@ class ProfessorController {
             @RequestParam StudyMode studyMode
     ) {
         CourseAssignmentData data = new CourseAssignmentData(faculty, academicYear, studyMode);
+        System.out.println(faculty);
+        System.out.println(academicYear);
+        System.out.println(studyMode);
         return service.getProfessorsByAssignment(data);
     }
 }

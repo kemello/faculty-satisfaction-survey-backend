@@ -25,7 +25,7 @@ public class ProfessorService {
 
 
     @Transactional
-    public AddCourseResponse  addCourse(AddCourseRequest request) {
+    public AddCourseResponse addCourse(AddCourseRequest request) {
         ProfessorEntity professor = repository.findById(request.professorId()).orElseThrow();
         CourseEntity course = CourseMapper.toEntity(request.courseName(), professor, request.assignments());
         professor.addCourse(course);

@@ -6,6 +6,7 @@ import kg.adam.faculty_satisfaction_survey.survey.domain.model.CreateSurveyReque
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.SurveyData;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,8 +28,20 @@ public class SurveyService {
     public void assignQuestions(AssignQuestionsRequest request) {
         SurveyEntity survey = repository.findById(request.surveyId()).orElseThrow();
 
+        // Clear existing questions (this properly manages orphan removal)
+        if (survey.getQuestions() == null) {
+            survey.setQuestions(new ArrayList<>());
+        } else {
+            survey.getQuestions().clear();
+        }
+
+
         List<QuestionEntity> questionEntities = QuestionMapper.toEntityList(request.assignments(), survey);
-        survey.setQuestions(questionEntities);
+        for (QuestionEntity question : questionEntities) {
+            survey.addQuestion(question);
+        }
+
         repository.save(survey);
     }
+
 }

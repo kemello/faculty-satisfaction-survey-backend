@@ -24,7 +24,8 @@ class SurveyEntity extends BaseEntity<Long> {
     private String description;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuestionEntity> questions;
+    private List<QuestionEntity> questions = new ArrayList<>();
+
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -32,20 +33,21 @@ class SurveyEntity extends BaseEntity<Long> {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
 
-    public SurveyEntity(String name, String description, LocalDate endDate, LocalDate startDate) {
+
+    public SurveyEntity(String name, String description, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.description = description;
-        this.endDate = endDate;
         this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     protected SurveyEntity() {
@@ -59,8 +61,6 @@ class SurveyEntity extends BaseEntity<Long> {
 
 
     // getters and setters
-
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

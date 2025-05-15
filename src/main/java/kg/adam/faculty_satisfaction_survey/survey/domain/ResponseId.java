@@ -16,11 +16,16 @@ class ResponseId implements Serializable {
     @Column(name = "anonymous_id", nullable = false)
     private String anonymousId;
 
-    @Column(name = "survey_id", nullable = false)
-    private Long surveyId;
-
     @Column(name = "question_id", nullable = false)
     private Long questionId;
+
+    ResponseId(String anonymousId, Long questionId) {
+        this.anonymousId = anonymousId;
+        this.questionId = questionId;
+    }
+
+    protected ResponseId () {
+    }
 
     // Getters and setters
 
@@ -32,13 +37,6 @@ class ResponseId implements Serializable {
         this.anonymousId = anonymousId;
     }
 
-    public Long getSurveyId() {
-        return surveyId;
-    }
-
-    public void setSurveyId(Long surveyId) {
-        this.surveyId = surveyId;
-    }
 
     public Long getQuestionId() {
         return questionId;
@@ -56,13 +54,12 @@ class ResponseId implements Serializable {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ResponseId entity = (ResponseId) o;
         return Objects.equals(this.anonymousId, entity.anonymousId) &&
-                Objects.equals(this.surveyId, entity.surveyId) &&
                 Objects.equals(this.questionId, entity.questionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(anonymousId, surveyId, questionId);
+        return Objects.hash(anonymousId, questionId);
     }
 
 }
