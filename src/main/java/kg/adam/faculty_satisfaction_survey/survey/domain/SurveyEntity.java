@@ -8,7 +8,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "survey")
@@ -24,7 +26,7 @@ class SurveyEntity extends BaseEntity<Long> {
     private String description;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuestionEntity> questions = new ArrayList<>();
+    private Set<QuestionEntity> questions = new HashSet<>();
 
 
     @Column(name = "start_date", nullable = false)
@@ -101,11 +103,11 @@ class SurveyEntity extends BaseEntity<Long> {
         this.name = name;
     }
 
-    public List<QuestionEntity> getQuestions() {
+    public Set<QuestionEntity> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<QuestionEntity> questions) {
+    public void setQuestions(Set<QuestionEntity> questions) {
         this.questions = questions;
     }
 

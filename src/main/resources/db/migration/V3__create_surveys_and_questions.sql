@@ -36,7 +36,7 @@ create table question_option
     text         varchar(255) not null,
     value        varchar(255) not null,
     option_order integer not null,
-    primary key (question_id),
+    primary key (question_id, option_order),
     foreign key (question_id) references survey_question (id) on delete cascade
 );
 

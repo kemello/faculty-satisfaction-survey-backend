@@ -1,13 +1,11 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.transaction.Transactional;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.AssignQuestionsRequest;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.CreateSurveyRequest;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.SurveyData;
+import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -30,13 +28,13 @@ public class SurveyService {
 
         // Clear existing questions (this properly manages orphan removal)
         if (survey.getQuestions() == null) {
-            survey.setQuestions(new ArrayList<>());
+            survey.setQuestions(new HashSet<>());
         } else {
             survey.getQuestions().clear();
         }
 
 
-        List<QuestionEntity> questionEntities = QuestionMapper.toEntityList(request.assignments(), survey);
+        Set<QuestionEntity> questionEntities = QuestionMapper.toEntitySet(request.assignments(), survey);
         for (QuestionEntity question : questionEntities) {
             survey.addQuestion(question);
         }
@@ -44,4 +42,10 @@ public class SurveyService {
         repository.save(survey);
     }
 
+    public Set<QuestionAssignmentData> getQuestions(Long surveyId) {
+        SurveyEntity survey = repository.findById(1L).orElseThrow();
+
+        Set<QuestionEntity> questions = survey.getQuestions();
+        return QuestionMapper.toDataSet(questions);
+    }
 }

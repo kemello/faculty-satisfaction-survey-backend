@@ -1,13 +1,11 @@
 package kg.adam.faculty_satisfaction_survey.survey.web;
 
 import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyService;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.AssignQuestionsRequest;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.CreateSurveyRequest;
-import kg.adam.faculty_satisfaction_survey.survey.domain.model.SurveyData;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/surveys")
@@ -27,5 +25,11 @@ class SurveyController {
     void assignQuestions(@RequestBody AssignQuestionsRequest request) {
         service.assignQuestions(request);
     }
+
+    @GetMapping("/{surveyId}/questions")
+    Set<QuestionAssignmentData> getQuestions(@PathVariable Long surveyId) {
+        return service.getQuestions(surveyId);
+    }
+
 
 }
