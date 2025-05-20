@@ -45,9 +45,11 @@ create table survey_response
 (
     anonymous_id varchar(255) not null,
     question_id  bigint not null,
-    response     text not null,
+    survey_id    bigint not null,
+    content     text not null,
     response_at  timestamp not null,
-    primary key (anonymous_id, question_id),
-    foreign key (question_id) references survey_question (id) on delete cascade
+    primary key (anonymous_id, question_id, survey_id),
+    foreign key (question_id) references survey_question (id) on delete cascade,
+    foreign key (survey_id) references survey (id) on delete cascade
 );
 

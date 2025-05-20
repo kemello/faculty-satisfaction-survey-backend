@@ -42,7 +42,11 @@ class QuestionEntity extends BaseEntity<Long> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private SurveyEntity survey;
 
-    @OneToMany(mappedBy = "id.questionId")
+    @OneToMany(
+            mappedBy = "question", // Match the field name in ResponseEntity
+            cascade = CascadeType.ALL, // Add cascade
+            orphanRemoval = true
+    )
     private List<ResponseEntity> responses = new ArrayList<>();
 
     @ElementCollection
@@ -66,10 +70,10 @@ class QuestionEntity extends BaseEntity<Long> {
         this.options.add(option);
     }
 
-//    public void addResponse(ResponseEntity response) {
-//        response.setQuestion(this);
-//        this.responses.add(response);
-//    }
+    public void addResponse(ResponseEntity response) {
+        response.setQuestion(this);
+        this.responses.add(response);
+    }
 
 
     // getters and setters

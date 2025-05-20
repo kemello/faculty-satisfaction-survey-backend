@@ -31,5 +31,10 @@ class SurveyController {
         return service.getQuestions(surveyId);
     }
 
+    @PostMapping("/assign-responses")
+    void assignResponses(@RequestBody AssignResponsesRequest request) {
+        System.out.println(request);
+        service.assignResponses(request);
+    }
 
 }

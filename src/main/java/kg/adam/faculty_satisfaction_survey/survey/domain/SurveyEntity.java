@@ -28,6 +28,8 @@ class SurveyEntity extends BaseEntity<Long> {
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuestionEntity> questions = new HashSet<>();
 
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ResponseEntity> responses = new ArrayList<>();
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -56,11 +58,15 @@ class SurveyEntity extends BaseEntity<Long> {
     }
 
     //aggregate behavior
-    public void addQuestion(QuestionEntity question) {
+    void addQuestion(QuestionEntity question) {
         question.setSurvey(this);
         questions.add(question);
     }
 
+    void addResponse(ResponseEntity response) {
+        response.setSurvey(this);
+        responses.add(response);
+    }
 
     // getters and setters
     public LocalDateTime getCreatedAt() {
@@ -125,5 +131,13 @@ class SurveyEntity extends BaseEntity<Long> {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<ResponseEntity> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(List<ResponseEntity> responses) {
+        this.responses = responses;
     }
 }
