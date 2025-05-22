@@ -1,10 +1,10 @@
-package kg.adam.faculty_satisfaction_survey.survey.web;
+package kg.adam.faculty_satisfaction_survey.survey.web.controller;
 
+import jakarta.validation.Valid;
 import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyService;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -17,12 +17,12 @@ class SurveyController {
     }
 
     @PostMapping
-    SurveyData createSurvey(@RequestBody CreateSurveyRequest request) {
+    SurveyData createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
         return service.createSurvey(request);
     }
 
     @PostMapping("/assign-questions")
-    void assignQuestions(@RequestBody AssignQuestionsRequest request) {
+    void assignQuestions(@Valid @RequestBody AssignQuestionsRequest request) {
         service.assignQuestions(request);
     }
 
@@ -32,7 +32,7 @@ class SurveyController {
     }
 
     @PostMapping("/assign-responses")
-    void assignResponses(@RequestBody AssignResponsesRequest request) {
+    void assignResponses(@Valid @RequestBody AssignResponsesRequest request) {
         System.out.println(request);
         service.assignResponses(request);
     }

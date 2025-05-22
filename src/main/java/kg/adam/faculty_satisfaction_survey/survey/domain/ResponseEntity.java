@@ -1,6 +1,7 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ class ResponseEntity {
     @EmbeddedId
     private ResponseId id;
 
+    @NotBlank(message = "Response content cannot be empty")
     @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
     private String content;
 

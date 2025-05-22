@@ -1,6 +1,9 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,6 +22,7 @@ class SurveyEntity extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "survey_id_seq")
     private Long id;
 
+    @NotBlank(message = "Survey name cannot be empty")
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -31,9 +35,11 @@ class SurveyEntity extends BaseEntity<Long> {
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResponseEntity> responses = new ArrayList<>();
 
+    @FutureOrPresent(message = "Start date must be in present or future")
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
+    @Future(message = "End date must be in future")
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 

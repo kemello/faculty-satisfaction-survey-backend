@@ -53,7 +53,7 @@ class QuestionEntity extends BaseEntity<Long> {
     @CollectionTable(name = "question_option", joinColumns = @JoinColumn(name = "question_id"))
     private List<QuestionOption> options = new ArrayList<>();
 
-    public QuestionEntity(String text, QuestionType questionType, QuestionCategory category,
+    QuestionEntity(String text, QuestionType questionType, QuestionCategory category,
                           Integer order, SurveyEntity survey) {
         this.text = text;
         this.questionType = questionType;
