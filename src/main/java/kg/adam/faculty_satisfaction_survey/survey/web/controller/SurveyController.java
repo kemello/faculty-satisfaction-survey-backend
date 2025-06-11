@@ -5,6 +5,7 @@ import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyService;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,6 +30,11 @@ class SurveyController {
     @GetMapping("/{surveyId}/questions")
     Set<QuestionAssignmentData> getQuestions(@PathVariable Long surveyId) {
         return service.getQuestions(surveyId);
+    }
+
+    @GetMapping("/{surveyId}/responses")
+    List<ResponseAssignmentData> getResponses(@PathVariable Long surveyId) {
+        return service.getResponses(surveyId);
     }
 
     @PostMapping("/assign-responses")

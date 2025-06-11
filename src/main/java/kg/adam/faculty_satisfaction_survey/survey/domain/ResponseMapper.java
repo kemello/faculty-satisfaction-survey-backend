@@ -42,4 +42,12 @@ class ResponseMapper {
                 })
                 .collect(Collectors.toList());
     }
+
+    static List<ResponseAssignmentData> toDataList(List<ResponseEntity> responseEntities) {
+        return responseEntities.stream()
+                .map(entity -> new ResponseAssignmentData(
+                        entity.getQuestion().getId(),
+                        entity.getContent()))
+                .collect(Collectors.toList());
+    }
 }

@@ -10,6 +10,7 @@ import kg.adam.faculty_satisfaction_survey.common.enums.QuestionType;
 import java.util.List;
 
 public record QuestionAssignmentData(
+        @NotNull Long id,
         @NotBlank String questionText,
         @NotNull QuestionType questionType,
         @NotNull QuestionCategory category,

@@ -40,14 +40,11 @@ public class SurveyService {
     public void assignQuestions(AssignQuestionsRequest request) {
         SurveyEntity survey = getSurveyById(request.surveyId());
 
-
-        // Clear existing questions (this properly manages orphan removal)
-        survey.setQuestions(new HashSet<>()); // Replaces null check and clear
-
+        survey.getQuestions().clear();
 
         Set<QuestionEntity> questions = QuestionMapper.toEntitySet(request.assignments(), survey);
-
         questions.forEach(survey::addQuestion);
+
         repository.save(survey);
     }
 
@@ -81,7 +78,7 @@ public class SurveyService {
                         assert q.getId() != null;
                         return q.getId().equals(response.questionId());
                     })) {
-                throw new RuntimeException("Question not found in survey");
+                throw new QuestionNotFoundException("Question not found in survey");
             }
         });
 
@@ -94,6 +91,11 @@ public class SurveyService {
         });
 
         repository.save(survey);
+    }
+
+    public List<ResponseAssignmentData> getResponses(Long surveyId) {
+        SurveyEntity survey = getSurveyById(surveyId);
+        return ResponseMapper.toDataList(survey.getResponses());
     }
 
 

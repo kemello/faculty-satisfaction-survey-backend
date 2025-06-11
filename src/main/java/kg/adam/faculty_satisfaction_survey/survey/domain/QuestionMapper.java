@@ -30,6 +30,7 @@ class QuestionMapper {
 
     static QuestionAssignmentData toData(QuestionEntity questionEntity) {
         return new QuestionAssignmentData(
+                questionEntity.getId(),
                 questionEntity.getText(),
                 questionEntity.getQuestionType(),
                 questionEntity.getCategory(),
