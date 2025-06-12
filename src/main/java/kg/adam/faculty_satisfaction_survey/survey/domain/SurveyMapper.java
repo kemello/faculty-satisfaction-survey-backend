@@ -5,7 +5,13 @@ import kg.adam.faculty_satisfaction_survey.survey.domain.model.SurveyData;
 
 class SurveyMapper {
     static SurveyEntity toEntity(CreateSurveyRequest request) {
-        return new SurveyEntity(request.name(), request.description(),  request.startDate(), request.endDate());
+        return new SurveyEntity(
+                request.name(),
+                request.description(),
+                request.startDate(),
+                request.endDate(),
+                request.status()
+        );
     }
 
     public static SurveyData toData(SurveyEntity entity) {

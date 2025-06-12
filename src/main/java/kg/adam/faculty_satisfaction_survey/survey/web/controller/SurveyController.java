@@ -1,8 +1,13 @@
 package kg.adam.faculty_satisfaction_survey.survey.web.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyService;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +23,21 @@ class SurveyController {
     }
 
     @PostMapping
-    SurveyData createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
-        return service.createSurvey(request);
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<SurveyData> createSurvey(@Valid @RequestBody CreateSurveyRequest request) {
+        return new ResponseEntity<>(service.createSurvey(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/assign-questions")
-    void assignQuestions(@Valid @RequestBody AssignQuestionsRequest request) {
+    ResponseEntity<Void> assignQuestions(@Valid @RequestBody AssignQuestionsRequest request) {
         service.assignQuestions(request);
+        return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/{surveyId}/questions")
-    Set<QuestionAssignmentData> getQuestions(@PathVariable Long surveyId) {
-        return service.getQuestions(surveyId);
+    ResponseEntity<Set<QuestionAssignmentData>> getQuestions(
+            @PathVariable @Min(1) Long surveyId) {
+        return ResponseEntity.ok(service.getQuestions(surveyId));
     }
 
     @GetMapping("/{surveyId}/responses")
@@ -38,9 +46,27 @@ class SurveyController {
     }
 
     @PostMapping("/assign-responses")
-    void assignResponses(@Valid @RequestBody AssignResponsesRequest request) {
-        System.out.println(request);
+    ResponseEntity<Void> assignResponses(@Valid @RequestBody AssignResponsesRequest request) {
         service.assignResponses(request);
+        return ResponseEntity.accepted().build();
     }
 
+    // Add exception handler for this controller
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ProblemDetail> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Validation Error");
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            problemDetail.setProperty(error.getField(), error.getDefaultMessage());
+        });
+
+        return ResponseEntity.badRequest().body(problemDetail);
+    }
+
+    @PostMapping("/{surveyId}/activate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void activateSurvey(@PathVariable Long surveyId) {
+        service.activateSurvey(surveyId);
+    }
 }

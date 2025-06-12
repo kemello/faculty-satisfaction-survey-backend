@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import kg.adam.faculty_satisfaction_survey.common.enums.QuestionCategory;
-import kg.adam.faculty_satisfaction_survey.common.enums.QuestionType;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.QuestionCategory;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.QuestionType;
 
 import java.util.List;
 

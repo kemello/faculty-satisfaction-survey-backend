@@ -17,7 +17,9 @@ class ResponseMapper {
         ResponseId id = new ResponseId(
                 anonymousId,
                 question.getId(),
-                survey.getId()
+                survey.getId(),
+                data.professorId()
+
         );
 
         return new ResponseEntity(data.content(), id, survey, question);
@@ -47,6 +49,7 @@ class ResponseMapper {
         return responseEntities.stream()
                 .map(entity -> new ResponseAssignmentData(
                         entity.getQuestion().getId(),
+                        entity.getId().getProfessorId(),
                         entity.getContent()))
                 .collect(Collectors.toList());
     }

@@ -1,12 +1,15 @@
 package kg.adam.faculty_satisfaction_survey.professor.web;
 
+import jakarta.validation.Valid;
 import kg.adam.faculty_satisfaction_survey.common.enums.AcademicYear;
 import kg.adam.faculty_satisfaction_survey.common.enums.Faculty;
 import kg.adam.faculty_satisfaction_survey.common.enums.StudyMode;
 import kg.adam.faculty_satisfaction_survey.professor.domain.ProfessorService;
 import kg.adam.faculty_satisfaction_survey.professor.domain.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -51,4 +54,16 @@ class ProfessorController {
         System.out.println(studyMode);
         return service.getProfessorsByAssignment(data);
     }
+
+    // In ProfessorController.java
+    @PostMapping("/batch")
+    @ResponseStatus(HttpStatus.CREATED)
+    List<ProfessorData> createProfessorsBatch(
+            @Valid @RequestBody BatchCreateProfessorRequest request
+    ) {
+        return service.createProfessorsBatch(request);
+    }
+
 }
+
+

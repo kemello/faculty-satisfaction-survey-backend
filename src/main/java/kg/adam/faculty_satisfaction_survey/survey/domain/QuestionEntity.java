@@ -2,9 +2,8 @@ package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.persistence.*;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
-import kg.adam.faculty_satisfaction_survey.common.enums.QuestionCategory;
-import kg.adam.faculty_satisfaction_survey.common.enums.QuestionType;
-import org.hibernate.annotations.ColumnDefault;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.QuestionCategory;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.QuestionType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;

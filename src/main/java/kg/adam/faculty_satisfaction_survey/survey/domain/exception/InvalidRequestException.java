@@ -1,7 +1,7 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain.exception;
 
 public class InvalidRequestException extends RuntimeException {
-    private InvalidRequestException(String message) {
+    public InvalidRequestException(String message) {
         super(message);
     }
 

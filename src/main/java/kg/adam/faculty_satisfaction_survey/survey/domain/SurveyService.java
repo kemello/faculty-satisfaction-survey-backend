@@ -1,6 +1,7 @@
 package kg.adam.faculty_satisfaction_survey.survey.domain;
 
 import jakarta.transaction.Transactional;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.SurveyStatus;
 import kg.adam.faculty_satisfaction_survey.survey.domain.exception.QuestionNotFoundException;
 import kg.adam.faculty_satisfaction_survey.survey.domain.exception.SurveyNotFoundException;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
@@ -19,6 +20,7 @@ public class SurveyService {
 
     public SurveyData createSurvey(CreateSurveyRequest request) {
         SurveyEntity newSurvey = SurveyMapper.toEntity(request);
+
         SurveyEntity savedSurvey = repository.save(newSurvey);
         return SurveyMapper.toData(savedSurvey);
     }
@@ -93,9 +95,27 @@ public class SurveyService {
         repository.save(survey);
     }
 
+
     public List<ResponseAssignmentData> getResponses(Long surveyId) {
         SurveyEntity survey = getSurveyById(surveyId);
         return ResponseMapper.toDataList(survey.getResponses());
+    }
+
+    @Transactional
+    public void deactivateAllActiveSurveys() {
+        repository.findAllByStatus(SurveyStatus.ACTIVE)
+                .forEach(survey -> survey.setStatus(SurveyStatus.ARCHIVED));
+        repository.flush();
+    }
+
+    @Transactional
+    public void activateSurvey(Long surveyId) {
+
+        SurveyEntity survey = repository.findById(surveyId)
+                .orElseThrow(() -> SurveyNotFoundException.forId(surveyId));
+
+        survey.setStatus(SurveyStatus.ACTIVE);
+        repository.save(survey);
     }
 
 

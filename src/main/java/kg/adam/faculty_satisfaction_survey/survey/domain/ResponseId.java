@@ -21,11 +21,15 @@ class ResponseId implements Serializable {
     @Column(name = "survey_id" ,  nullable = false)
     private Long surveyId;
 
+    @Column(name = "professor_id", nullable = false)
+    private Long professorId;
 
-    ResponseId(String anonymousId, Long questionId, Long surveyId) {
+
+    ResponseId(String anonymousId, Long questionId, Long surveyId, Long professorId) {
         this.anonymousId = anonymousId;
         this.questionId = questionId;
         this.surveyId = surveyId;
+        this.professorId = professorId;
     }
 
     protected ResponseId () {
@@ -58,7 +62,14 @@ class ResponseId implements Serializable {
         this.surveyId = responseId;
     }
 
-    // Equals and hashCode
+    public Long getProfessorId() {
+        return professorId;
+    }
+
+    public void setProfessorId(Long professorId) {
+        this.professorId = professorId;
+    }
+// Equals and hashCode
 
 
     @Override

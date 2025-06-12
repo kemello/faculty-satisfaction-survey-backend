@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.SurveyStatus;
 
 import java.time.LocalDate;
 
@@ -14,11 +15,12 @@ public record CreateSurveyRequest(
         String description,
 
         @NotNull(message = "Start date is required")
-        @FutureOrPresent(message = "Start date must be today or future")
+//        @FutureOrPresent(message = "Start date must be today or future")
         LocalDate startDate,
 
         @NotNull(message = "End date is required")
         @Future(message = "End date must be in future")
-        LocalDate endDate
-) {
-}
+        LocalDate endDate,
+        @NotNull(message = "Survey status is required")
+        SurveyStatus status
+){}

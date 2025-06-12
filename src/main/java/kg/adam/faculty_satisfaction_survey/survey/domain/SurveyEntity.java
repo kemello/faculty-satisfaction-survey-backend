@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import kg.adam.faculty_satisfaction_survey.common.BaseEntity;
+import kg.adam.faculty_satisfaction_survey.survey.domain.enums.SurveyStatus;
+import kg.adam.faculty_satisfaction_survey.survey.domain.exception.InvalidRequestException;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -29,13 +31,17 @@ class SurveyEntity extends BaseEntity<Long> {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private SurveyStatus status;
+
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<QuestionEntity> questions = new HashSet<>();
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResponseEntity> responses = new ArrayList<>();
 
-    @FutureOrPresent(message = "Start date must be in present or future")
+//    @FutureOrPresent(message = "Start date must be in present or future")
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
@@ -53,15 +59,24 @@ class SurveyEntity extends BaseEntity<Long> {
 
 
 
-    public SurveyEntity(String name, String description, LocalDate startDate, LocalDate endDate) {
+    SurveyEntity(String name, String description, LocalDate startDate, LocalDate endDate, SurveyStatus status) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
     }
 
     protected SurveyEntity() {
     }
+
+//    @PrePersist
+//    @PreUpdate
+//    private void validateSurveyStatus() {
+//        if (status == SurveyStatus.ACTIVE && startDate.isAfter(LocalDate.now())) {
+//            throw new InvalidRequestException("Active survey must have valid start date");
+//        }
+//    }
 
     //aggregate behavior
     void addQuestion(QuestionEntity question) {
@@ -145,5 +160,13 @@ class SurveyEntity extends BaseEntity<Long> {
 
     public void setResponses(List<ResponseEntity> responses) {
         this.responses = responses;
+    }
+
+    public SurveyStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SurveyStatus status) {
+        this.status = status;
     }
 }

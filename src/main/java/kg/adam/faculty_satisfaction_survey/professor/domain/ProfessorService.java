@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import kg.adam.faculty_satisfaction_survey.professor.domain.model.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,19 @@ public class ProfessorService {
         return repository.findAllByFaculty(data.faculty().name()).stream()
                 .map(ProfessorMapper::toData)
                 .collect(Collectors.toSet());
+    }
+
+    @Transactional
+    public List<ProfessorData> createProfessorsBatch(BatchCreateProfessorRequest request) {
+        List<ProfessorEntity> entities = request.professors().stream()
+                .map(ProfessorMapper::toEntity)
+                .toList();
+
+        List<ProfessorEntity> saved = repository.saveAll(entities);
+
+        return saved.stream()
+                .map(ProfessorMapper::toData)
+                .toList();
     }
 
 }
