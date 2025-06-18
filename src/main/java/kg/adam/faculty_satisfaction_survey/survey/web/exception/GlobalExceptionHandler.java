@@ -1,9 +1,6 @@
 package kg.adam.faculty_satisfaction_survey.survey.web.exception;
 
-import kg.adam.faculty_satisfaction_survey.survey.domain.exception.InvalidRequestException;
-import kg.adam.faculty_satisfaction_survey.survey.domain.exception.QuestionNotFoundException;
-import kg.adam.faculty_satisfaction_survey.survey.domain.exception.ResponseNotFoundException;
-import kg.adam.faculty_satisfaction_survey.survey.domain.exception.SurveyNotFoundException;
+import kg.adam.faculty_satisfaction_survey.survey.domain.exception.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -52,6 +49,39 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setProperty("error_message", ex.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    ProblemDetail handleInvalidToken(InvalidTokenException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle("Invalid Token");
+        problemDetail.setType(BAD_REQUEST_TYPE);
+        problemDetail.setProperty("service", SERVICE_NAME);
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(TokenAlreadyUsedException.class)
+    ProblemDetail handleTokenAlreadyUsed(TokenAlreadyUsedException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle("Token Already Used");
+        problemDetail.setType(BAD_REQUEST_TYPE);
+        problemDetail.setProperty("service", SERVICE_NAME);
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    ProblemDetail handleTokenExpired(TokenExpiredException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle("Token Expired");
+        problemDetail.setType(BAD_REQUEST_TYPE);
+        problemDetail.setProperty("service", SERVICE_NAME);
+        problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
 }
