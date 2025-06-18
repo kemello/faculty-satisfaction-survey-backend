@@ -8,6 +8,7 @@ import kg.adam.faculty_satisfaction_survey.survey.domain.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -118,5 +119,11 @@ public class SurveyService {
         repository.save(survey);
     }
 
+    public List<SurveyData> getAllActiveSurveys() {
+        List<SurveyEntity> activeSurveys = repository.findAllByStatus(SurveyStatus.ACTIVE);
+        return activeSurveys.stream()
+                .map(SurveyMapper::toData)
+                .collect(Collectors.toList());
+    }
 
 }

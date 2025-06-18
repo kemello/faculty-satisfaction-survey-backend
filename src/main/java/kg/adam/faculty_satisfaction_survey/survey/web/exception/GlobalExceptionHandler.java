@@ -2,6 +2,7 @@ package kg.adam.faculty_satisfaction_survey.survey.web.exception;
 
 import kg.adam.faculty_satisfaction_survey.survey.domain.exception.*;
 import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -84,4 +85,20 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
+
+    // Add exception handler for this controller
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ProblemDetail> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Validation Error");
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            problemDetail.setProperty(error.getField(), error.getDefaultMessage());
+        });
+
+        return ResponseEntity.badRequest().body(problemDetail);
+    }
+
 }
+
+

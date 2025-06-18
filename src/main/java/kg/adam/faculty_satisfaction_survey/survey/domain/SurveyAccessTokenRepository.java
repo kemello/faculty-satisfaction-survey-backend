@@ -8,5 +8,4 @@ import java.util.Optional;
 @Repository
 interface SurveyAccessTokenRepository extends JpaRepository<SurveyAccessTokenEntity, Long> {
     Optional<SurveyAccessTokenEntity> findByToken(String token);
-    boolean existsByHashAndSurveyId(String hash, Long surveyId);
 }

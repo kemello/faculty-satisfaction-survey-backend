@@ -19,14 +19,8 @@ class SurveyAccessTokenEntity extends BaseEntity<Long> {
     @Column(name = "survey_id", nullable = false)
     private Long surveyId;
 
-    @Column(name = "course_id", nullable = false)
-    private Long courseId;
-
-    @Column(name = "professor_id", nullable = false)
-    private Long professorId;
-
-    @Column(name = "hash", nullable = false)
-    private String hash;
+    @Column(name = "submission_hash", nullable = true)
+    private String submissionHash;
 
     @Column(name = "is_used", nullable = false)
     private boolean used = false;
@@ -42,12 +36,9 @@ class SurveyAccessTokenEntity extends BaseEntity<Long> {
     private LocalDateTime usedAt;
 
     // Constructor
-    SurveyAccessTokenEntity(String token, Long surveyId, Long courseId, Long professorId, String hash, LocalDateTime expiresAt) {
+    SurveyAccessTokenEntity(String token, Long surveyId, LocalDateTime expiresAt) {
         this.token = token;
         this.surveyId = surveyId;
-        this.courseId = courseId;
-        this.professorId = professorId;
-        this.hash = hash;
         this.expiresAt = expiresAt;
     }
 
@@ -55,8 +46,9 @@ class SurveyAccessTokenEntity extends BaseEntity<Long> {
     }
 
     // Methods
-    public void markAsUsed() {
+    public void markAsUsed(String submissionHash) {
         this.used = true;
+        this.submissionHash = submissionHash;
         this.usedAt = LocalDateTime.now();
     }
 
@@ -78,16 +70,8 @@ class SurveyAccessTokenEntity extends BaseEntity<Long> {
         return surveyId;
     }
 
-    public Long getCourseId() {
-        return courseId;
-    }
-
-    public Long getProfessorId() {
-        return professorId;
-    }
-
-    public String getHash() {
-        return hash;
+    public String getSubmissionHash() {
+        return submissionHash;
     }
 
     public boolean isUsed() {

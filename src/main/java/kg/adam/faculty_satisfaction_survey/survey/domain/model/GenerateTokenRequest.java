@@ -8,13 +8,5 @@ public record GenerateTokenRequest(
     @Positive(message = "Survey ID must be positive")
     Long surveyId,
     
-    @NotNull(message = "Course ID is required")
-    @Positive(message = "Course ID must be positive")
-    Long courseId,
-    
-    @NotNull(message = "Professor ID is required")
-    @Positive(message = "Professor ID must be positive")
-    Long professorId,
-    
     Integer validityInDays
 ) {}

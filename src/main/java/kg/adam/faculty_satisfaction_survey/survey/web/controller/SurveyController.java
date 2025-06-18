@@ -51,22 +51,15 @@ class SurveyController {
         return ResponseEntity.accepted().build();
     }
 
-    // Add exception handler for this controller
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ProblemDetail> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setTitle("Validation Error");
-
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            problemDetail.setProperty(error.getField(), error.getDefaultMessage());
-        });
-
-        return ResponseEntity.badRequest().body(problemDetail);
-    }
 
     @PostMapping("/{surveyId}/activate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void activateSurvey(@PathVariable Long surveyId) {
         service.activateSurvey(surveyId);
+    }
+
+    @GetMapping("/active")
+    ResponseEntity<List<SurveyData>> getActiveSurveys() {
+        return ResponseEntity.ok(service.getAllActiveSurveys());
     }
 }

@@ -3,6 +3,7 @@ package kg.adam.faculty_satisfaction_survey.survey.web.controller;
 import jakarta.validation.Valid;
 import kg.adam.faculty_satisfaction_survey.survey.domain.SurveyAccessTokenService;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.GenerateTokenRequest;
+import kg.adam.faculty_satisfaction_survey.survey.domain.model.SubmitSurveyWithTokenRequest;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.TokenData;
 import kg.adam.faculty_satisfaction_survey.survey.domain.model.ValidateTokenRequest;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,13 @@ public class SurveyAccessTokenController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> validateToken(@Valid @RequestBody ValidateTokenRequest request) {
         tokenService.validateToken(request);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/submit")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> submitSurveyWithToken(@Valid @RequestBody SubmitSurveyWithTokenRequest request) {
+        tokenService.submitSurveyWithToken(request);
         return ResponseEntity.noContent().build();
     }
 }
